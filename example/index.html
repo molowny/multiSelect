@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jQuery multiSelect example</title>
+
+        <meta charset="utf-8">
+
+        <style>
+        * {margin: 0; padding: 0;}
+
+        .ms-wrapper {
+            border: 1px solid #999;
+            overflow: hidden;
+
+            width: 600px;
+            font-size: 12px;
+            padding: 5px; margin: 5px;
+        }
+
+        .ms-container {
+
+        }
+
+        .ms-container li {
+            list-style: none;
+            float: left;
+            border: 1px solid #D7DBDA;
+            background: #EAEEED;
+            padding: 2px;
+            margin: 2px;
+        }
+
+        .ms-remove {
+            margin-left: 3px;
+        }
+
+        .ms-input {
+            border: 0;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .ms-loading {
+            background: url(loading.gif) no-repeat;
+            display: none; float: right;
+            width: 16px; height: 16px;
+        }
+        </style>
+    </head>
+
+    <body>
+        <select multiple>
+            <option value="1">value 1</option>
+            <option value="2">value 2</option>
+            <option value="3">value 3</option>
+            <option value="4">value 4</option>
+            <option value="5">value 5</option>
+        </select>
+
+        <br>
+        <br>
+        <br>
+
+        <select multiple>
+            <option value="1">value 1</option>
+            <option value="2">value 2</option>
+            <option value="3">value 3</option>
+            <option value="4">value 4</option>
+            <option value="5">value 5</option>
+        </select>
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+        <script src="../jquery.multiselect.js"></script>
+
+        <script>
+            $(function () {
+                $('select').multiSelect();
+            });
+        </script>
+    </body>
+</html>
