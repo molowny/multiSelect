@@ -1,7 +1,8 @@
 (function ($) {
     $.fn.multiSelect = function (options) {
         var opts = $.extend({
-            debug: true,
+            debug: false,
+            
             // css classes
             wrapperClass   : 'ms-wrapper',
             containerClass : 'ms-container', // ul class
@@ -16,6 +17,7 @@
 
         function initMultiSelect() {
             var $$ = $(this),
+            
             $container = $('<ul />', {
                 'class': opts.containerClass
             }),
@@ -70,7 +72,7 @@
                 });
             }
 
-            $container.insertAfter($$/*.hide()*/.wrap($('<div />', {
+            $container.insertAfter($$.hide().wrap($('<div />', {
                 'class': opts.wrapperClass
             }))).parent().append($textInput).append($loading);
 
@@ -80,49 +82,27 @@
                 switch(event.keyCode) {
                     // return key
                     case 13:
-                        event.preventDefault();
+                        //event.preventDefault();
                         break;
                 }
             }).autocomplete({
                 source: values,
-                select: function(event, ui) {
-
-                    log( ui.item ?
-					"Selected: " + ui.item.value + " aka " + ui.item.id :
-					"Nothing selected, input was " + this.value );
-                                    
-                    var selected = $.grep(values, function (e, i) {
-                        return e.id == ui.item.id;
+                
+                select: function(e, ui) {
+                    values = $.grep(values, function (el, i) {
+                        return el.id != ui.item.id;
                     });
 
-                    values = $.grep(values, function (e, i) {
-                        return e.id != ui.item.id;
-                    });
+                    $container.append(createNodeValue(ui.item.id, ui.item.value));
+                    $$.find('option[value="'+ui.item.id+'"]').attr('selected', 'selected');
 
-                    $(this).autocomplete('option', 'source', values);
-
-                    $$.find('option[value="'+selected.id+'"]').attr('selected', 'selected');
-
-                    /*if (pos != -1) {
-                        var node = values[pos];
-                        $container.append(createNodeValue(node.value, node.label));
-
-                        labels = $.grep(labels, function (e, i) {
-                            return i !== pos;
-                        });
-
-                        values = $.grep(values, function (e, i) {
-                            return i !== pos;
-                        });
-
-                        $(this).autocomplete('option', 'source', labels);
-
-                        $$.find('option[value="'+node.value+'"]').attr('selected', 'selected');
-                    }*/
+                    $(this).val('').autocomplete('option', 'source', values);
+                    
+                    e.preventDefault();
                 }
             });
         }
 
-        $(this).each(initMultiSelect);
+        return $(this).each(initMultiSelect);
     };
 })(jQuery);
