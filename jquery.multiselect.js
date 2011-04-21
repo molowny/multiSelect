@@ -30,13 +30,12 @@
                 'class': opts.loadingClass
             });
             
-            var values = [], labels = [];
+            var values = [];
 
             function uncheckNode($node) {
                 var $option = $node.parent().prev('select').find('option[value="'+$node.data('value')+'"]');
 
-                labels.push($option.html());
-                values.push({value: $node.data('value'), label: $option.html()});
+                values.push({id: $node.data('value'), value: $option.html()});
 
                 $option.removeAttr('selected');
 
@@ -67,12 +66,11 @@
                 });
                 
                 $multi.find('option').not(':selected').each(function () {
-                    labels.push($(this).html());
-                    values.push({value: $(this).attr('value'), label: $(this).html()});
+                    values.push({id: $(this).attr('value'), value: $(this).html()});
                 });
             }
 
-            $container.insertAfter($$.hide().wrap($('<div />', {
+            $container.insertAfter($$/*.hide()*/.wrap($('<div />', {
                 'class': opts.wrapperClass
             }))).parent().append($textInput).append($loading);
 
@@ -86,11 +84,26 @@
                         break;
                 }
             }).autocomplete({
-                source: labels,
+                source: values,
                 select: function(event, ui) {
-                    var pos = $.inArray(ui.item.label, labels);
 
-                    if (pos != -1) {
+                    log( ui.item ?
+					"Selected: " + ui.item.value + " aka " + ui.item.id :
+					"Nothing selected, input was " + this.value );
+                                    
+                    var selected = $.grep(values, function (e, i) {
+                        return e.id == ui.item.id;
+                    });
+
+                    values = $.grep(values, function (e, i) {
+                        return e.id != ui.item.id;
+                    });
+
+                    $(this).autocomplete('option', 'source', values);
+
+                    $$.find('option[value="'+selected.id+'"]').attr('selected', 'selected');
+
+                    /*if (pos != -1) {
                         var node = values[pos];
                         $container.append(createNodeValue(node.value, node.label));
 
@@ -105,7 +118,7 @@
                         $(this).autocomplete('option', 'source', labels);
 
                         $$.find('option[value="'+node.value+'"]').attr('selected', 'selected');
-                    }
+                    }*/
                 }
             });
         }
