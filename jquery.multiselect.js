@@ -38,9 +38,9 @@
                 var $option = $node.parent().prev('select').find('option[value="'+$node.data('value')+'"]');
 
                 values.push({id: $node.data('value'), value: $option.html()});
+                $textInput.autocomplete('option', 'source', values);
 
                 $option.removeAttr('selected');
-
                 $node.remove();
             }
 
@@ -99,6 +99,10 @@
                     $(this).val('').autocomplete('option', 'source', values);
                     
                     e.preventDefault();
+                }
+            }).focus(function () {
+                if ($(this).val() == '') {
+                    //$(this).autocomplete('search', '');
                 }
             });
         }
